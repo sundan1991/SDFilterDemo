@@ -1,0 +1,31 @@
+//
+//  JMDataManager.h
+//  JiuMu
+//
+//  Created by lzt on 16/3/31.
+//  Copyright © 2016年 西搜(韦忠添). All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface JMDataManager : NSObject
++ (NSArray*)getCustomImageWithTpyeID:(NSString *)typeId;
++ (NSArray*)getCustomImageUnId:(NSString *)uid;
+
++ (NSArray*)getCustomModels;
++ (NSArray*)getCustomTypeWithModelID:(NSString*)typeId;
++ (NSArray*)getCustomStyle;
++ (NSArray*)getCollectionArray;
+
++ (NSArray*)getProductsArray;
+
+#pragma mark - 查询 套间定制
++ (NSArray*)getRoomModels:(NSString*)romid;
+
+#pragma mark - 查询 订单
+
++ (NSArray*)getOrderList;
+
++ (NSArray*)getProductIds:(NSString*)prdis;
+
+@end

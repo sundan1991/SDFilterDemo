@@ -1,0 +1,290 @@
+//
+//  JMDataManager.m
+//  JiuMu
+//
+//  Created by lzt on 16/3/31.
+//  Copyright © 2016年 西搜(韦忠添). All rights reserved.
+//
+
+#import "JMDataManager.h"
+#import "Define.h"
+#import "CustomProductImages.h"
+#import "CustomModel.h"
+#import "CustomType.h"
+#import "CustomStyleModel.h"
+#import "RoomModel.h"
+#import "ProductAttribteModel.h"
+#import "OrderModel.h"
+
+@implementation JMDataManager
+
++ (NSArray*)getCustomImageWithTpyeID:(NSString *)typeId{
+    
+    NSString * sql = [NSString stringWithFormat:@"SELECT * FROM CustomProductImages where type_id = %@",typeId];
+    
+    if (!typeId) {
+        sql = @"SELECT * FROM CustomProductImages";
+    }
+    
+    NSMutableArray *modelsArray = [[RelationManager key:sql] mutableCopy];//
+    if (modelsArray.count) {
+        return modelsArray;
+    }
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+        return nil;
+    }
+    
+    modelsArray = [@[] mutableCopy];
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        CustomProductImages *customProductImages = [[CustomProductImages alloc]init];
+        [customProductImages updateModel:rs];
+        [modelsArray addObject:customProductImages];
+        
+    }
+    [rs close];
+    [db close];
+  
+    return modelsArray;
+}
+
++ (NSArray*)getCustomImageUnId:(NSString *)uid{
+    
+    NSString * sql = [NSString stringWithFormat:@"SELECT * FROM CustomProductImages where id = %@",uid];
+    
+    NSMutableArray *modelsArray ;
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+        return nil;
+    }
+    
+    modelsArray = [@[] mutableCopy];
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        CustomProductImages *customProductImages = [[CustomProductImages alloc]init];
+        [customProductImages updateModel:rs];
+        [modelsArray addObject:customProductImages];
+        
+    }
+    [rs close];
+    [db close];
+    
+    return modelsArray;
+}
+
++ (NSArray*)getCustomModels{
+    
+    
+    
+    NSString *sql = @"SELECT * FROM CustomModel";
+    
+    NSMutableArray *listModelArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+        return nil;
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        CustomModel *custommodel = [[CustomModel alloc]init];
+        [custommodel updateModel:rs];
+        [listModelArr insertObject:custommodel atIndex:0];
+        
+    }
+    
+    [rs close];
+    [db close];
+    
+    return listModelArr;
+}
+
+
++ (NSArray *)getCustomTypeWithModelID:(NSString *)modelId{
+    
+    
+    NSString * sql = [NSString stringWithFormat:@"SELECT * FROM CustomType where model_id = %@",modelId];
+    
+    NSMutableArray *listTypeArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        CustomType *customtype = [[CustomType alloc]init];
+        [customtype updateModel:rs];
+        [listTypeArr addObject:customtype];
+        
+    }
+    [rs close];
+    [db close];
+   
+    
+    return listTypeArr;
+}
+
++ (NSArray*)getCustomStyle{
+    
+    NSString * sql = @"SELECT * FROM CustomStyles";
+    
+    NSMutableArray *listTypeArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        CustomStyleModel *customtype = [CustomStyleModel createModel:rs];
+        [listTypeArr addObject:customtype];
+        
+    }
+    [rs close];
+    [db close];
+    
+   
+    
+    return listTypeArr;
+}
+
++ (NSArray*)getCollectionArray{
+    
+    NSString * sql = @"SELECT * FROM CustomRoom";
+    
+    NSMutableArray *listTypeArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        RoomModel *customtype = [RoomModel createModel:[RoomModel class] withData:rs];
+        [listTypeArr addObject:customtype];
+        
+    }
+    [rs close];
+    [db close];
+   
+    
+    return listTypeArr;
+}
+
++ (NSArray *)getProductsArray{
+    
+    NSString * sql = @"SELECT * FROM ProductAttribute";
+    
+    NSMutableArray *listTypeArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        ProductAttribteModel *customtype = [ProductAttribteModel createModel:[ProductAttribteModel class] withData:rs];
+        [listTypeArr addObject:customtype];
+        
+    }
+    [rs close];
+    [db close];
+    
+   
+    
+    return listTypeArr;
+}
+
+#pragma mark - 查询 套间定制
++ (NSArray*)getRoomModels:(NSString*)romid{
+    
+    //    CREATE TABLE if not exists CustomRoom (ID TEXT PRIMARY KEY DEFAULT NULL,crId TEXT,name TEXT,bgId TEXT,productsId TEXT)"
+    
+    NSString * sql = [NSString stringWithFormat:@"SELECT * FROM CustomRoom where crId = %@",romid];
+    
+    NSMutableArray *listTypeArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        RoomModel *customtype = [RoomModel createModel:[RoomModel class] withData:rs];
+        [listTypeArr addObject:customtype];
+        
+    }
+    [rs close];
+    [db close];
+    
+    
+    return listTypeArr;
+}
+
++ (NSArray*)getOrderList{
+    
+    //    @"CREATE TABLE if not exists OrderData (ID TEXT PRIMARY KEY DEFAULT NULL,orderNo TEXT,time TEXT,cName TEXT,type TEXT,address TEXT,contact TEXT,productId TXET,number TEXT,price TEXT)";
+    
+    NSString * sql = @"SELECT * FROM OrderData";
+    
+    NSMutableArray *listTypeArr = [@[] mutableCopy];
+    
+    FMDatabase * db = [FMDatabase dataBase];
+    if (![db open]) {
+        //打开失败
+        NSLog(@"Could not open db.");
+    }
+    
+    FMResultSet *rs = [db executeQuery:sql];
+    while ([rs next]) {
+        OrderModel *customtype = [OrderModel createModel:[OrderModel class] withData:rs];
+        [listTypeArr addObject:customtype];
+        
+    }
+    [rs close];
+    [db close];
+    
+
+    
+    return listTypeArr;
+}
+
++ (NSArray*)getProductIds:(NSString*)prdis{
+  
+    
+    NSArray *array = [prdis componentsSeparatedByString:@","];
+    
+    NSMutableArray *allItems = [NSMutableArray array];
+    
+    for (NSString *sid in array) {
+        NSArray *items = [JMDataManager getCustomImageUnId:sid];
+        if ([items firstObject]) {
+            [allItems addObject:[items firstObject]];
+        }
+    }
+
+    
+    return allItems;
+}
+
+@end

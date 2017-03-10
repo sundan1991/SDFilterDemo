@@ -1,9 +1,9 @@
 # SDFilterDemo
-#import "SDView.h"
-@property (nonatomic ,strong)   SDView *sdView;
-<SDViewDelegate>
+引入头文件 #import "SDView.h"
+声明属性 @property (nonatomic ,strong)  SDView *sdView;
+遵循代理 <SDViewDelegate>
 调用 [self.view addSubview:[self returnSDView]];
-// 加载筛选控件
+实现方法
 - (UIView *)returnSDView{
     
     //筛选条件view的高度

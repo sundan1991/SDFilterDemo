@@ -1,8 +1,11 @@
  ![image](http://github.com/sundan1991/SDFilterDemo/raw/master/aaa.png)
 
 引入头文件 #import "SDView.h"
+
 声明属性 @property (nonatomic ,strong)  SDView *sdView;
+
 遵循代理 <SDViewDelegate>
+
 调用 [self.view addSubview:[self returnSDView]];
 实现方法
 - (UIView *)returnSDView{
